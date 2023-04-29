@@ -36,6 +36,14 @@ Run `void-install` without any arguments to get help.
 Run `void-install -i` to start the installer and choose language.
 
 <img alt="void-install-choose-language" src="assets/void-install-choose-language.jpg" width="600" />
-
 <img alt="void-install-main-menu" src="assets/void-install-main-menu.jpg" width="600" />
-
+<img alt="void-install-choose-mirror" src="assets/void-install-choose-mirror.jpg" width="600" />
+<img alt="void-install-choose-source" src="assets/void-install-choose-source.jpg" width="600" />
+<img alt="void-install-choose-disk" src="assets/void-install-choose-disk.jpg" width="600" />
+<img alt="void-install-choose-filesystem" src="assets/void-install-choose-filesystem.jpg" width="600" />
+<img alt="void-install-choose-timezone" src="assets/void-install-choose-timezone.jpg" width="600" />
+<img alt="void-install-choose-wm" src="assets/void-install-choose-wm.jpg" width="600" />
+<img alt="void-install-choose-extra" src="assets/void-install-choose-extra.jpg" width="600" />
+<img alt="void-install-choose-fde" src="assets/void-install-choose-fde.jpg" width="600" />
+<img alt="void-install-clear-vg" src="assets/void-install-clear-vg.jpg" width="600" />
+<img alt="void-install-choose-wifi" src="assets/void-install-choose-wifi.jpg" width="600" />
