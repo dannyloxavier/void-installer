@@ -454,7 +454,7 @@ sh_main() {
 		i18=$(${DIALOG}                                          \
 			--stdout                                              \
 			--default-item "$LC_DEFAULT"									\
-		   --erase-on-exit 													\
+		   --clear			 													\
 			--backtitle    "$ccabec"                              \
 			--title        "${welcome[$LC_DEFAULT]}"					\
 			--ok-label 		"${cmsg_Aceitar[$LC_DEFAULT]}"			\
@@ -1366,7 +1366,7 @@ sh_choosemirror() {
 			--backtitle "$ccabec"									\
 			--default-item "${_MIRROR}"							\
 			--colors														\
-			--erase-on-exit											\
+			--clear														\
 			--cancel-label "${cmsg_Sair[$LC_DEFAULT]}"		\
 			--ok-label 	"${cmsg_Aceitar[$LC_DEFAULT]}"		\
 			--extra-button	--extra-label  "void-testmirror"	\

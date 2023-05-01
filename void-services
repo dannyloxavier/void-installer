@@ -464,7 +464,7 @@ sh_main() {
 		i18=$(${DIALOG}                                          \
 			--stdout                                              \
 			--default-item "$LC_DEFAULT"									\
-		   --erase-on-exit 													\
+		   --clear			 													\
 			--backtitle    "$ccabec"                              \
 			--title        "${welcome[$LC_DEFAULT]}"					\
 			--ok-label 		"${cmsg_Aceitar[$LC_DEFAULT]}"			\

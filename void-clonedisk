@@ -254,7 +254,7 @@ conf() {
          --backtitle "$ccabec"                        \
          --no-collapse                                \
          --no-cr-wrap                                 \
-         --erase-on-exit                              \
+         --clear			                              \
          --yes-label "${cmsg_yeslabel[$LC_DEFAULT]}"  \
          --no-label  "${cmsg_nolabel[$LC_DEFAULT]}"   \
          --yesno     "$*"                             \

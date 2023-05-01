@@ -4,7 +4,7 @@
 
 #  void-install
 #  Created: 2022/12/24
-#  Altered: 2023/04/30
+#  Altered: 2023/05/01
 #
 #  Copyright (c) 2022-2023, Vilmar Catafesta <vcatafesta@gmail.com>
 #                2022-2023, Felipe Nogueira <contato.fnog@gmail.com>
@@ -39,7 +39,7 @@ shopt -s extglob
 
 #system
 readonly APP="${0##*/}"
-readonly _VERSION_='1.6.515-20230430'
+readonly _VERSION_='1.6.599-20230501'
 readonly	distro=$(uname -n)
 readonly DEPENDENCIES=(dialog awk tar sed cat grep sort tr chroot blkid fdisk parted lsblk curl xz mkfs.vfat tee lvm cryptsetup)
 #                      cfdisk gdisk sfdisk efivar mkfs.ext2 mkfs.ext3 mkfs.ext4 mkfs.btrfs mkfs.xfs mkfs.f2fs mkfs.jfs mkfs.reiserfs)
@@ -158,10 +158,10 @@ sh_setEnvironment() {
 	: "${LFILE=}"
 
 	# dialog colors
-	: "${GREEN="\Z2"}"
-	: "${MAGENTA="\Z5"}"
-	: "${REVERSE="\Zr"}"
-	: "${UNDERLINE="\Zu"}"
+	GREEN="\Z2"
+	MAGENTA="\Z5"
+	REVERSE="\Zr"
+	UNDERLINE="\Zu"
 	BLACK="\Z0"
 	YELLOW="\Z3"
 	WHITE="\Z7"
@@ -646,7 +646,7 @@ conf() {
 			--backtitle "$ccabec"      						\
 			--no-collapse											\
 			--no-cr-wrap											\
-		   --erase-on-exit 										\
+		   --clear			 										\
 			--yes-label "${cmsg_yeslabel[$LC_DEFAULT]}"	\
 			--no-label  "${cmsg_nolabel[$LC_DEFAULT]}"	\
 			--yesno     "$*"           						\
@@ -1858,7 +1858,7 @@ sh_chooseMirror() {
 			--stdout														\
 			--keep-tite 												\
 			--aspect 20													\
-		   --erase-on-exit 											\
+		   --clear			 											\
 			--backtitle    "$ccabec"								\
 			--default-item	"${AConfMirror[_MIRROR]}"			\
 			--colors														\
@@ -4315,7 +4315,7 @@ sh_ternario() {
 sh_main() {
 	while true; do
 		i18=$(${DIALOG}													\
-			--stdout --keep-tite --aspect 20 --erase-on-exit	\
+			--stdout --keep-tite --aspect 20 --clear				\
 			--default-item "$LC_DEFAULT"								\
 			--backtitle    "$ccabec"									\
 			--clear															\
@@ -4376,7 +4376,6 @@ sh_main_menu() {
 
 		menu=$(${DIALOG}																		\
 			--backtitle "$ccabec"															\
-		   --erase-on-exit 																	\
 		   --clear																				\
 			--colors																				\
 			--default-item "$DEFITEM"														\
@@ -4425,7 +4424,7 @@ sh_main_menu() {
         	"Wifi") 									sh_confWifi "$@"     && [ -n "$LWIFI" ]		&& DEFITEM="${cmsg_Instalar[$LC_DEFAULT]}";;
    		"${cmsg_Servicos[$LC_DEFAULT]}")	sh_voidServices;;
         	"${cmsg_Sair[$LC_DEFAULT]}")		die "${cmsg_InstalacaoAbortada[$LC_DEFAULT]}...";;
-	      *) ${DIALOG} --erase-on-exit 																\
+	      *) ${DIALOG} --clear			 																\
 					--title		"$ccabecmin" 															\
 					--colors																					\
 					--yes-label	"${cmsg_yeslabel[$LC_DEFAULT]}"									\
@@ -4938,6 +4937,12 @@ sh_chooseVg() {
 
 	sh_vg_info
 	sorted_list=$(for key in "${!AARRAY_VG_DEVICES[@]}"; { echo "$key|${AARRAY_VG_DEVICES[$key]}"; } | sort -t\| -k2 -k1)
+
+	if [[ ${#sorted_list} -eq 0 ]]; then
+		alerta " ** VG **" "${BOLD}${BLACK}${REVERSE}Info: Nenhum VG localizado no systema."
+		return 1
+	fi
+
 	defaultitem="${AConfFde[vg]}"
 	while IFS='|' LC_ALL=C read -r -a fields; do
 		x="${fields[0]}"
