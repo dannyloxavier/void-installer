@@ -3,7 +3,7 @@
 
 #  void-gitclone
 #  Created: 2023/01/27
-#  Altered: 2023/04/04
+#  Altered: 2023/04/30
 #
 #  Copyright (c) 2022-2023, Vilmar Catafesta <vcatafesta@gmail.com>
 #  All rights reserved.
@@ -37,7 +37,7 @@ set -o pipefail
 
 #system
 readonly APP="${0##*/}"
-readonly _VERSION_='0.0.99-20230404'
+readonly _VERSION_='0.1.02-20230430'
 readonly DEPENDENCIES=(git)
 trap 'printf "\n${red}Interrupted! exiting...\n"; cleanup; exit 0' INT TERM HUP
 declare VERBOSE=0
@@ -163,12 +163,12 @@ sh_usage() {
 	echo -e "  -V, --verbose    Enable verbose output."
 	echo -e "  -n, --nocolor    colorless output."
 	echo -e "  -f, --file FILE  Use FILE as repository entry."
-	exit 1
+	exit 0
 }
 
 sh_git_clone_read(){
 	echo "Insira o(s) repositório(s) que deseja clonar (separados por espaço):"
-	read repos
+	read -r repos
 
 	# Converte a string de repositórios em um array
 	IFS=' ' read -r -a repos_array <<< "$repos"
@@ -215,7 +215,6 @@ sh_checkDependencies
 handle_error() {
 	echo "${red}Error: Failed to parse arguments." >&2
 	sh_usage >&2
-	exit 1
 }
 
 # Define as opções permitidas
@@ -223,10 +222,8 @@ OPTIONS=f:vhVn
 LONGOPTIONS=file:,version,verbose,help,nocolor
 
 # Processa as opções
-opts=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@")
-if [ $? -ne 0 ]; then
-   sh_usage
-   exit 1
+if ! (( opts=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@") )); then
+	sh_usage
 fi
 eval set -- "$opts"
 
@@ -236,7 +233,7 @@ while true; do
 		-f|--file) 		FILE="$2";shift 2;;
 		-V|--version)	sh_version;exit 0;;
 		-v|--verbose)	VERBOSE=1;shift;;
-		-h|--help)		sh_usage;exit 0;;
+		-h|--help)		sh_usage;;
 		-n|--nocolor)	sh_unsetvarcolors;shift;;
 		--)				shift;break;;
 		:) echo "Option -$OPTARG requires an argument" >&2; handle_error;;
@@ -249,7 +246,7 @@ if (( VERBOSE )); then
 fi
 
 # Verifica se o arquivo existe
-if [ ! -z "$FILE" ]; then
+if [ -n "$FILE" ]; then
 	if [ ! -f "$FILE" ]; then
 	  die "Arquivo de repositórios não encontrado."
 	else

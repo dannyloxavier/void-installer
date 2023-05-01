@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#shellcheck disable=SC2145,SC2001,SC2188,SC2015,SC2155,SC2317,SC2320,SC2291,SC2034,SC2016,SC2154,SC2207,SC2166,SC2128,SC2059,SC2140,SC2031,SC2030,SC2036
+#shellcheck disable=SC2034,SC2155,SC2154,SC2181
 
 #  void-install
 #  Created: 2023/04/25
@@ -64,8 +64,8 @@ sh_setenvironment() {
 	COL_NC='\e[0m' # No Color
 	COL_LIGHT_GREEN='\e[1;32m'
 	COL_LIGHT_RED='\e[1;31m'
-	TICK="$white[${COL_LIGHT_GREEN}✓${COL_NC}${white}]"
-	CROSS="$white[${COL_LIGHT_RED}✗${COL_NC}$white]"
+	TICK="${white}[${COL_LIGHT_GREEN}✓${COL_NC}${white}]"
+	CROSS="${white}[${COL_LIGHT_RED}✗${COL_NC}${white}]"
 	INFO="[i]"
 	# shellcheck disable=SC2034
 	DONE="${COL_LIGHT_GREEN} done!${COL_NC}"
@@ -76,9 +76,8 @@ sh_setenvironment() {
 }
 
 sh_unsetvarcolors() {
-	bold=		reset=	cyan=		red=		blue=
-	white=	black=	green=	yellow=	orange=
-	pink=		cyan=		purple=	violet=
+	unset bold reset cyan red blue white black
+	unset green yellow orange pink cyan purple violet
 }
 
 sh_getLocale() {
@@ -94,9 +93,9 @@ sh_getLocale() {
 
 readconf() {
 	if [[ $LC_DEFAULT -eq 0 ]]; then
-		read -r -p "$@ [S/n]"
+		read -r -p "$* [S/n]"
 	else
-		read -r -p "$@ [Y/n]"
+		read -r -p "$* [Y/n]"
 	fi
 	[[ ${REPLY^} == "" ]] && return 0
 	[[ ${REPLY^} == N  ]] && return 1 || return 0
@@ -104,9 +103,9 @@ readconf() {
 
 readnotconf() {
 	if [[ $LC_DEFAULT -eq 0 ]]; then
-		read -r -p "$@ [s/N]"
+		read -r -p "$* [s/N]"
 	else
-		read -r -p "$@ [y/N]"
+		read -r -p "$* [y/N]"
 	fi
 	[[ ${REPLY^} == "" ]]  && return 1
 	[[ ${REPLY^} == N  ]]  && return 1 || return 0
@@ -122,7 +121,6 @@ sh_checkRoot() {
 	local str="Root user check"
 	if [[ "$(id -u)" != "0" ]]; then
 		die "${red} error: you cannot perform this operation unless you are root."
-		exit 1
 	fi
 	printf "  %b %s\\n" "${TICK}" "${str}"
 	return 0
@@ -140,10 +138,10 @@ log_msg() {
 
 sh_version() {
 	printf "%s\n" "${black}${0##*/} v${_VERSION_}${reset}"
-	printf "${bold}${black}Copyright (C) 2023 vcatafesta@gmail.com\n\
+	printf "%s\n" "${bold}${black}Copyright (C) 2023 vcatafesta@gmail.com\n\
 GPLv3+ License: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\n\
 This is free software: you are free to change and redistribute it.\n\
-THERE IS NO WARRANTY, to the fullest extent permitted by law.${reset}\n"
+THERE IS NO WARRANTY, to the fullest extent permitted by law.${reset}"
 }
 
 sh_usage() {
@@ -159,23 +157,23 @@ ${cyan}[<operations>] ${reset}
    ${red}-n  --nocolor${cyan}       #remove colors from output
    ${red}-h  --help${cyan}          #this help
 EOF
-	exit 1
+	exit 0
 }
 
 limpa_vm() {
-	echo -n ${black};
+	echo -n "${black}";
 	log_msg "${green}starting cleaning";
 
 	umount -Rl /mnt/voidlinux 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
 	log_msg "${black}Unmounting FS  : ${orange}/mnt/voidlinux"
 
-	umount -Rl /dev/$_vg/* 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
+	umount -Rl /dev/"$_vg"/* 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
    log_msg "${black}Unmounting LVs : ${orange}/dev/$_vg/*"
 
-   lvremove -ff /dev/$_vg/* 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
+   lvremove -ff /dev/"$_vg"/* 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
    log_msg "${black}Removing LVs   : ${orange}/dev/$_vg/*"
 
-   vgremove -ff $_vg 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
+   vgremove -ff "$_vg" 2>&1 | tee -i -a "$BOOTLOG" > "$LOGGER"
    log_msg "${black}Removing VG    : ${orange}$_vg"
 
 #	log_msg "${black}Removing PVs (Volumes Fisícos)";
@@ -221,31 +219,31 @@ OPTIONS=r:lfVnh
 LONGOPTIONS=remove:,list,force,version,nocolor,help
 opts=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@")
 if [ $? -ne 0 ]; then
-	sh_usage; exit $(( $# ? 0 : 1 ))
+	sh_usage
 fi
 eval set -- "$opts"
 
 while true; do
 	case "$1" in
 		-r|--remove)	_vg="$2"; shift 2;;
-		-l|--list)     sh_checkRoot; log_msg "Listing VGs ..."; echo -n ${cyan};vgs --noheadings;exit $(( $# ? 0 : 1 ));;
+		-l|--list)     sh_checkRoot; log_msg "Listing VGs ..."; echo -n "${cyan}";vgs --noheadings;exit $(( $# ? 0 : 1 ));;
 		-f|--force)    force=1;log_msg "Enabling force mode"; shift;;
 		-n|--nocolor)  sh_unsetvarcolors;shift;;
-		-V|--version)  sh_version;exit 0;;
-		-h|--help)     sh_usage;exit 0;;
+		-V|--version)  sh_version;;
+		-h|--help)     sh_usage;;
 		--)            shift;break;;
-		*) 				sh_usage; exit $(( $# ? 0 : 1 ));;
+		*) 				sh_usage;;
 	esac
 done
 
 if [ -z "$_vg" ]; then
-	sh_usage; exit $(( $# ? 0 : 1 ))
+	sh_usage
 fi
 sh_checkRoot
 VGs="$(vgs --noheadings)"
 echo "VGs available : "
-echo -n ${cyan}; vgs --noheadings
-echo ${reset}"VG to remove : "
+echo -n "${cyan}"; vgs --noheadings
+echo "${reset}VG to remove : "
 echo "  ${yellow}$_vg"
 echo
 if grep -o -q "$_vg " <<< "$VGs"; then

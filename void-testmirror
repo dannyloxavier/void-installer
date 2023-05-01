@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-#shellcheck disable=SC2155,SC2206,SC2016
+#shellcheck disable=SC2155,SC2206,SC2016,SC2034,SC2154,SC2015
 # void-testmirror
 # Require: xbps-install -S curl bc geoip geoip-data geoipupdate iputils
 
 #  Created: 2022/11/05
-#  Altered: 2023/04/17
+#  Altered: 2023/04/30
 #
 #  Copyright (c) 2022-2022, Vilmar Catafesta <vcatafesta@gmail.com>
 #
@@ -28,7 +28,7 @@ export PS4=$'${red}${0##*/}${green}[$FUNCNAME]${pink}[$LINENO]${reset} '
 
 #system
 readonly APP="${0##*/}"
-readonly _VERSION_='0.3.20-20230417'
+readonly _VERSION_='0.3.99-20230430'
 readonly distro=$(uname -n)
 readonly DEPENDENCIES=(bc geoiplookup geoipupdate sed awk tput wget curl)
 readonly DEP_PACKAGES=(bc geoip geoip-data geoipupdate sed gawk ncurses wget curl)
@@ -459,7 +459,7 @@ main_test_mirror() {
 			msgl "Testing (HTTP) for ${orange}$repo${reset} ($geo)"
 			ping=$(curl -s -w '%{time_total}\n' -o /dev/null "$filerepo/current/x86_64-repodata")
 		fi
-		[[ $ping != ""  ]] && {
+		[[ -n "$ping" ]] && {
 			msgr "${pink}Average time: ${red}$ping${reset}"
 			aHits+=("$ping,$filerepo,$geo")
 			if (( $(bc <<< "$ping<$fping") )); then
@@ -518,9 +518,9 @@ sh_checkDependencies() {
 
 readconf() {
 	if [[ $LC_DEFAULT -eq 0 ]]; then
-		read -r -p "$@ [S/n]"
+		read -r -p "$* [S/n]"
 	else
-		read -r -p "$@ [Y/n]"
+		read -r -p "$* [Y/n]"
 	fi
 	[[ ${REPLY^} == "" ]] && return $false
 	[[ ${REPLY^} == N  ]]  && return $true || return $false
