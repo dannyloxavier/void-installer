@@ -1,3 +1,13 @@
+2023-04-30 dom 23:42 UTC-0400 Vilmar Catafesta <vcatafesta@gmail.com>
++ bashrc.sh					#several updates
++ void-install				#several updates
++ void-clonedisk			#fix issues
++ void-gitclone			#fix issues
++ void-mirror				#fix issues
++ void-remove-vg			#fix issues
++ void-services			#fix issues
++ void-testmirror			#fix issues
++ void-wifi					#fix issues
 2023-04-28 sex 16:48 UTC-0400 Vilmar Catafesta <vcatafesta@gmail.com>
 + void-install				#several updates
 + void-remove-vg

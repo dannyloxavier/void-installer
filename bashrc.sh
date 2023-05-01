@@ -39,115 +39,72 @@ export CDPATH=".:..:~"
 export VISUAL=nano
 export EDITOR=nano
 eval $(dircolors -b $HOME/.dircolors)
-alias dd="dd status=progress"
-alias wget="wget --no-check-certificate"
-alias dmesg="dmesg -T -x"
-alias cls=clear
-alias ren=mv
+ulimit -S -c 0      # Don't want coredumps.
+
+#newbie from windows
 alias ls="ls -la --color=auto --group-directories-first"
+alias .1='cd ..'
+alias .2='cd ../..'
+alias .3='cd ../../..'
+alias ack="ack -n --color-match=red"
+alias cls=clear
+alias copy=cp
+alias dd="dd status=progress"
+alias dmesg="dmesg -T -x"
 alias dirm="ls -h -ls -Sr --color=auto"
 alias dirt="la -h -ls -Sr -rt --color=auto"
 alias dir=ls
 alias DIR=ls
-alias ed=nano
-alias xcopyn="cp -Rpvan"
-alias xcopy="cp -Rpva"
-alias copy=cp
-alias md=mkdir
-alias rd=rmdir
 alias del=rm
+alias du="du -h"
+alias dut="du -hs * | sort -h"
+alias df="df -hT --total"
+alias dut="du -hs * | sort -h"
+alias dmesg="dmesg -T -x"
+alias dmesgerr="dmesg -T -x | grep -P '(:err |:warn )'"
+alias discos="udisksctl status"
+alias ed=nano
+alias ED=nano
+alias fs="file -s"
+alias dcomprimtar="tar -vzxf"
 alias deltraco="rm --"
+alias disable="sv stop $1"
 alias CD=cd
 alias cds="cd /etc/runit/runsvdir/current/; ls"
 alias cdd="cd /etc/sv/; ls"
-alias ddel2="find -iname $1 | xargs rm --verbose"
 alias ddel="find -name $1 | xargs rm -fvR"
+alias ddel2="find -iname $1 | xargs rm --verbose"
 alias fdisk="fdisk -l"
+alias ip="ip -c"
+alias l=dir
+alias listen="netstat -anp | grep :"
+alias mem="free -h"
+alias md=mkdir
+alias ouvindo="netstat -anp | grep :"
+alias ouvindo="netstat -anp | grep :"
+alias ports="sockstat | grep ."
 alias portas="nmap -v localhost"
-alias port="sockstat | grep ."
-alias du="du -h"
-alias dut="du -hs * | sort -h"
-alias df="df -hT --total"
-alias dut="du -hs * | sort -h"
-alias ver="lsb_release -a"
-alias versao=ver
-alias .1='cd ..'
-alias .2='cd ../..'
-alias .3='cd ../../..'
+alias portas1="lsof -i | grep ."
+alias pyc="python -OO -c 'import py_compile; py_compile.main()'"
+alias rd=rmdir
+alias ren=mv
+alias rsync="rsync --progress -Cravzp"
+alias reload="sv reload $1"
+alias restart="sv restart $1"
 alias start="sv start $1"
 alias stop="sv stop $1"
-alias restart="sv restart $1"
 alias status="sv status $1"
-alias reload="sv reload $1"
-alias disable="sv stop $1"
-alias rsync="rsync --progress -Cravzp"
+alias smbmount="mount -t cifs -o username=$USER,password=senha //10.0.0.68/c /root/windows"
+alias tml="tail -f /var/log/lastlog"
 alias targz="tar -xzvf"
 alias tarxz="tar -Jxvf"
 alias tarbz2="tar -xvjf"
 alias untar="tar -xvf"
-alias dcomprimtar="tar -vzxf"
-alias tml="tail -f /var/log/lastlog"
-alias ip="ip -c"
-alias dmesg="dmesg -T -x"
-alias dmesgerr="dmesg -T -x | grep -P '(:err |:warn )'"
-ulimit -S -c 0      # Don't want coredumps.
-alias ouvindo="netstat -anp | grep :"
-alias listen="netstat -anp | grep :"
-alias portas="sockstat | grep ."
-alias portas1="lsof -i | grep ."
-alias discos="udisksctl status"
-alias ack="ack -n --color-match=red"
-alias ouvindo="netstat -anp | grep :"
-alias listen="netstat -anp | grep :"
-alias portas="sockstat | grep ."
-alias portas1="lsof -i | grep ."
-
-#newbiew from windows
-alias ren=mv
-alias ls="ls -CF -h --color=auto --group-directories-first"
-alias dirm="ls -h -ls -Sr --color=auto"
-alias dir="ls -CF -la -h --color=auto --group-directories-first"
-alias DIR=dir
-alias l=dir
-alias dirt="la -h -ls -Sr -rt --color=auto"
-alias ed=nano
-alias ED=nano
-alias copy=cp
-alias md=mkdir
-alias rd=rmdir
-alias del=rm
-alias deltraco="rm --"
-alias df="df -hT --total"
-alias fs="file -s"
-alias mem="free -h"
-alias cls=clear
-alias CD=cd
-alias ddel2="find -iname $1 | xargs rm --verbose"
-alias ddel="find -name $1 | xargs rm -fvR"
-alias fdisk="fdisk -l"
-alias portas="nmap -v localhost"
-alias port="sockstat | grep ."
-alias cdi="cd /home/vcatafesta/SYS/sci ; ls"
-alias cds="cd /etc/rc.d/init.d ; ls"
-alias cdd="cd /etc/systemd/system/ ; ls"
-alias du="du -h"
-alias dut="du -hs * | sort -h"
+alias ver="lsb_release -a"
+alias versao=ver
+alias wget="wget --no-check-certificate"
 alias xcopyn="cp -Rpvan"
 alias xcopy="cp -Rpva"
-alias versao="lsb_release -a"
-alias ver="lsb_release -a"
-alias .1='cd ..'
-alias .2='cd ../..'
-alias .3='cd ../../..'
-alias dcomprimtar="tar -vzxf"
-alias targz="tar -xzvf"
-alias tarxz="tar -Jxvf"
-alias tarbz2="tar -xvjf"
-alias untar="tar -xvf"
-alias pyc="python -OO -c 'import py_compile; py_compile.main()'"
-alias tml="tail -f /var/log/lastlog"
-alias smbmount="mount -t cifs -o username=$USER,password=senha //10.0.0.68/c /root/windows"
-alias ip="ip -c"
 
 #harbour
 alias rmake="[ ! -d /tmp/.hbmk ] && { mkdir -p /tmp/.hbmk; }; hbmk2 -info -comp=gcc   -cpp=yes -jobs=36"
@@ -631,7 +588,7 @@ cpd() {
 	#................................................................
 
 	# tem somente dois parâmetros?
-	[ "$2" ] || die "Uso: $0 dir-origem dir-destino"
+	[ "$2" ] || die "Usage: $0 dir-origem dir-destino"
 
 	# a origem e o destino devem ser diretórios
 	#[ -d "$ORIGEM"  ] || die "A origem '$ORIGEM' deve ser um diretório"
@@ -870,8 +827,8 @@ void-mapdel() { sudo kpartx -dv $1; }
 
 fid() {
 	if [ $# -eq 0 ]; then
-		echo 'Uso: fid "*.c"'
-		echo '     fid "*"'
+		echo 'Usage: fid "*.c"'
+		echo '       fid "*"'
 		echo $(find . -iname "*" -type f | wc -l)
 		return
 	fi
@@ -881,9 +838,9 @@ fid() {
 
 ff() {
 	if [ $# -eq 0 ]; then
-		echo 'Uso: ff "*.c"'
-		echo '     ff "*.c" | xargs commando'
-		echo '     ff "*.c" | xargs cp -v /tmp'
+		echo 'Usage: ff "*.c"'
+		echo '       ff "*.c" | xargs commando'
+		echo '       ff "*.c" | xargs cp -v /tmp'
 		sudo find . -type f -iname '*'"$*"'*' -ls
 	fi
 	filepath=$1
@@ -892,22 +849,22 @@ ff() {
 
 ffe() {
 	[ "$1" ] || {
-		echo "Uso: ffe 'grep search'   | xargs comando";
-		echo "     ffe 'grep search";
-		echo "     ffe 'executable' | xargs rm -fv";
-		echo "     ffe 'ELF|ASCII|MP4' | xargs rm -fv";
-		echo "     ffe 'ELF|ASCII|MP4' | xargs cp -v /tmp"; return;
+		echo "Usage: ffe 'grep search'   | xargs comando";
+		echo "       ffe 'grep search";
+		echo "       ffe 'executable' | xargs rm -fv";
+		echo "       ffe 'ELF|ASCII|MP4' | xargs rm -fv";
+		echo "       ffe 'ELF|ASCII|MP4' | xargs cp -v /tmp"; return;
 	}
 	sudo find . -type f,d,l -exec file {} + | grep -iE "($1)" | cut -d: -f1
 }
 
 ffs() {
 	[ "$1" ] || {
-		echo "Uso: ffs 'search' '*.doc' | xargs comando"
-		echo "     ffs 'def |function ' '*.prg'"
-		echo "     ffs '#include' '*.*'"
-		echo "     ffs 'search|search|texto' '*.txt' | xargs rm -fv"
-		echo "     ffs 'ELF|ASCII|MP4' '*.doc' | xargs cp -v /tmp"
+		echo "Usage: ffs 'search' '*.doc' | xargs comando"
+		echo "       ffs 'def |function ' '*.prg'"
+		echo "       ffs '#include' '*.*'"
+		echo "       ffs 'search|search|texto' '*.txt' | xargs rm -fv"
+		echo "       ffs 'ELF|ASCII|MP4' '*.doc' | xargs cp -v /tmp"
 		return;
 	}
 	sudo grep -r --color=auto -n -iE "($1)" $2;
