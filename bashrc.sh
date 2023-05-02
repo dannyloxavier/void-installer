@@ -140,7 +140,7 @@ WAIT_PREFIX="${WARNING}  R  ${NORMAL}"
 WAIT_SUFFIX="${BRACKET}[${WARNING} WAIT ${BRACKET}]${NORMAL}"
 FAILURE_PREFIX="${FAILURE}  X  ${NORMAL}"
 
-path()				{ echo -e "${PATH//:/\\n}";}
+path()				{ echo -e "${PATH//:/\\n}"; }
 xdel()				{ find . -name "*$1*" | xargs rm -fv ; }
 tolower()			{ find . -name "*$1*" | while read; do mv "$REPLY" "${REPLY,,}"; done; }
 toupper()			{ find . -name "*$1*" | while read; do mv "$REPLY" "${REPLY^^}"; done; }
@@ -148,7 +148,7 @@ has()					{ command -v "$1" >/dev/null; }
 printeradd()		{ addprinter "$@"; }
 lsd() 				{ printf "${blue}\n"; ls -l | awk '/^d/ {print $9}'; printf "${reset}"; }
 lsa() 				{ echo -n ${orange}; ls -l | awk '/^-/ {print $9}'; }
-filehoracerta() 	{ export SOURCE_DATE_EPOCH=$(date +%s); find . -exec touch -h -d @$SOURCE_DATE_EPOCH {} + ;}
+filehoracerta() 	{ export SOURCE_DATE_EPOCH=$(date +%s); find . -exec touch -h -d @$SOURCE_DATE_EPOCH {} + ; }
 horacerta() 		{ sudo ntpd -q -g; sudo hwclock --systohc; }
 GREP_OPTIONS() 	{ GREP_OPTIONS='--color=auto'; }
 email() 				{ echo "CORPO" | mail -s "Subject" -A /etc/bashrc teste@balcao; }

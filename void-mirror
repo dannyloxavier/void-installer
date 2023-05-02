@@ -3,7 +3,7 @@
 
 #  void-install
 #  Created: 2023/01/22
-#  Altered: 2023/04/17
+#  Altered: 2023/05/02
 #
 #  Copyright (c) 2022-2023, Vilmar Catafesta <vcatafesta@gmail.com>
 #  All rights reserved.
@@ -34,7 +34,7 @@ export PS4=$'${red}${0##*/}${green}[$FUNCNAME]${pink}[$LINENO]${reset} '
 
 #system
 readonly APP="${0##*/}"
-readonly _VERSION_='0.3.20-20230417'
+readonly _VERSION_='0.3.22-20230502'
 readonly	distro=$(uname -n)
 readonly DEPENDENCIES=(wget dialog cat sed grep printf)
 declare -A Aidioma=([pt_BR]=0 [en_US]=1 [de_DE]=2 [fr_FR]=3 [es_ES]=4 [it_IT]=5)
@@ -55,7 +55,7 @@ cleanup() {
 }
 
 sh_ambiente() {
-	declare url_mirror='http://void.chililinux.com/voidlinux'
+	declare url_mirror='http://void.chililinux.com/voidlinux/'
 	readonly true=1
 	readonly false=0
 	readonly err_fatal=$true
@@ -1348,17 +1348,21 @@ sh_choosemirror() {
 	local -i LOCATION=3
 	local -i TIER=4
 
+	Amirrors+=([void.chililinux.com (https)]="https://void.chililinux.com/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2|")
+	Amirrors+=([void.chilios.com.br]="http://void.chilios.com.br/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2|")
+	Amirrors+=([void.chilios.com.br (https)]="https://void.chilios.com.br/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2|")
+
 	while true; do
 		array=()
 		sorted_list=$(for key in "${!Amirrors[@]}"; { echo "$key|${Amirrors[$key]}"; } | sort -t\| -k5 -k3)
 		while IFS='|' LC_ALL=C read -r -a fields; do
 			key="${fields[0]}"
 			[[ "$_MIRROR" = "$key" ]] && Aflag["$key"]='on' || Aflag["$key"]='off'
-			array+=("$key" "$(printf "$sep%-6s$sep%-25s$sep%-23s$sep%-s"\
+         array+=("$key" "$(printf "$sep%-6s$sep%-25s$sep%-23s$sep%-s"\
 											 "Tier ${fields[TIER]}"\
 											 "${fields[REGION]}"\
 											 "${fields[LOCATION]}"\
-											 "${fields[TIER]}")"\
+											 "${fields[REPOSITORY]}")"\
 											 "${Aflag[$key]}")
 		done <<< "${sorted_list[@]}"
 
@@ -1408,10 +1412,10 @@ sh_choosemirror() {
 			msg "INFO" "$(log_info_msg "${cmsg_Configurando[$LC_DEFAULT]} ${cmsg_Mirror[$LC_DEFAULT],,} ${cmsg_Em[$LC_DEFAULT]}: /etc/xbps.d/00-repository-main.conf")"
 		   mkdir -p "/etc/xbps.d/"
 		   cat > "/etc/xbps.d/00-repository-main.conf" <<- EOF
-			repository=$url_mirror/current
-			repository=$url_mirror/current/nonfree
-			repository=$url_mirror/current/multilib
-			repository=$url_mirror/current/multilib/nonfree
+			repository=${url_mirror}current
+			repository=${url_mirror}current/nonfree
+			repository=${url_mirror}current/multilib
+			repository=${url_mirror}current/multilib/nonfree
 			EOF
 		   evaluate_retval "$?"
 		fi

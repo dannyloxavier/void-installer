@@ -4,7 +4,7 @@
 
 #  void-install
 #  Created: 2022/12/24
-#  Altered: 2023/05/01
+#  Altered: 2023/05/02
 #
 #  Copyright (c) 2022-2023, Vilmar Catafesta <vcatafesta@gmail.com>
 #                2022-2023, Felipe Nogueira <contato.fnog@gmail.com>
@@ -39,7 +39,7 @@ shopt -s extglob
 
 #system
 readonly APP="${0##*/}"
-readonly _VERSION_='1.6.599-20230501'
+readonly _VERSION_='1.6.601-20230502'
 readonly	distro=$(uname -n)
 readonly DEPENDENCIES=(dialog awk tar sed cat grep sort tr chroot blkid fdisk parted lsblk curl xz mkfs.vfat tee lvm cryptsetup)
 #                      cfdisk gdisk sfdisk efivar mkfs.ext2 mkfs.ext3 mkfs.ext4 mkfs.btrfs mkfs.xfs mkfs.f2fs mkfs.jfs mkfs.reiserfs)
@@ -102,7 +102,7 @@ cleanup() {
 }
 
 sh_setEnvironment() {
-	declare url_mirror='https://repo-fastly.voidlinux.org'
+	declare url_mirror='https://repo-fastly.voidlinux.org/'
 	declare -g app_conf='/tmp/void-install.conf'
 	readonly cnickefi='void_install'
 	readonly dir_install='/mnt/voidlinux'
@@ -829,10 +829,10 @@ sh_update_mirror() {
 	last_msg="${cmsg_Configurando[$LC_DEFAULT]} ${cmsg_Mirror[$LC_DEFAULT],,} ${cmsg_Em[$LC_DEFAULT]} $dir_install"
 	msg "INFO" "$last_msg" "$(log_info_msg "$last_msg")"
 	cat > "$dir_install/etc/xbps.d/00-repository-main.conf" <<- EOF
-repository=$url_mirror/current
-repository=$url_mirror/current/nonfree
-repository=$url_mirror/current/multilib
-repository=$url_mirror/current/multilib/nonfree
+repository=${url_mirror}current
+repository=${url_mirror}current/nonfree
+repository=${url_mirror}current/multilib
+repository=${url_mirror}current/multilib/nonfree
 EOF
 	evaluate_retval "$?"
 }
@@ -1810,19 +1810,22 @@ sh_chooseMirror() {
 	local -i FLD_TIER=4
 
 	declare -gA Amirror=([voidlinux.com.br]="https://voidlinux.com.br/repo/|South and Central America|Ouro Preto, Brazil|2"
+	                     [void.chililinux.com]="http://void.chililinux.com/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2"
+	                     [void.chililinux.com (https)]="https://void.chililinux.com/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2"
+	                     [void.chilios.com.br]="http://void.chilios.com.br/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2"
+	                     [void.chilios.com.br (https)]="https://void.chilios.com.br/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2"
 	                     [mirror.sjtu.edu.cn]="https://mirror.sjtu.edu.cn/voidlinux/|Asia|Shanghai, China|2"
 	                     [mirrors.servercentral.com]="https://mirrors.servercentral.com/voidlinux/|North America|Chicago, USA|1"
-	                     [mirror.clarkson.edu]="https://mirror.clarkson.edu/voidlinux/|North America|New York, USA|2"
+	                     [mirror.clarkson.edu]="https://mirror.clarkson.edu/voidlinux/|North America/|New York, USA|2"
 	                     [void.webconverger.org]="https://void.webconverger.org/|Asia|Singapore|2"
 	                     [ftp.swin.edu.au]="https://ftp.swin.edu.au/voidlinux/|Oceania|Melbourne, Australia|2"
 	                     [ftp.debian.ru]="http://ftp.debian.ru/mirrors/voidlinux/|Europe|Russia|2"
-	                     [mirror.yandex.ru]="https://mirror.yandex.ru/mirrors/voidlinux/|Europe|Russia|2"
-	                     [void.chililinux.com]="http://void.chililinux.com/voidlinux/|South and Central America|Pimenta Bueno, Brazil|2"
+	                     [mirror.yandex.ru]="https://mirror.yandex.ru/mirrorsvoidlinux/|Europe|Russia|2"
 	                     [ftp.dk.xemacs.org]="http://ftp.dk.xemacs.org/voidlinux/|Europe|Denmark|2"
 	                     [ftp.lysator.liu.se]="https://ftp.lysator.liu.se/pub/voidlinux/|Europe|Sweden|2"
 	                     [mirror.nju.edu.cn]="https://mirror.nju.edu.cn/voidlinux/|Asia|China|2"
 	                     [quantum-mirror.hu]="https://quantum-mirror.hu/mirrors/pub/voidlinux/|Europe|Hungary|2"
-	                     [void.cijber.net]="https://void.cijber.net/|Europe|Amsterdam, Netherlands|2"
+	                     [void.cijber.net]="https://void.cijber.net/|Europe/|Amsterdam, Netherlands|2"
 	                     [mirror.puzzle.ch]="https://mirror.puzzle.ch/voidlinux/|Europe|Bern, Switzerland|2"
 	                     [repo-fi.voidlinux.org]="https://repo-fi.voidlinux.org/|Europe|Helsinki, Finland|1"
 	                     [mirrors.dotsrc.org]="https://mirrors.dotsrc.org/voidlinux/|Europe|Denmark|2"
@@ -1830,7 +1833,7 @@ sh_chooseMirror() {
 	                     [void.sakamoto.pl]="https://void.sakamoto.pl/|Europe|Warsaw, Poland|2"
 	                     [mirrors.cnnic.cn]="https://mirrors.cnnic.cn/voidlinux/|Asia|Beijing, China|2"
 	                     [mirror.vofr.net]="https://mirror.vofr.net/voidlinux/|North America|California, USA|2"
-	                     [mirror.aarnet.edu.au]="https://mirror.aarnet.edu.au/pub/voidlinux/|Oceania|Canberra, Australia|2"
+	                     [mirror.aarnet.edu.au]="https://mirror.aarnet.edu.aupub/voidlinux/|Oceania|Canberra, Australia|2"
 	                     [repo-fastly.voidlinux.org]="https://repo-fastly.voidlinux.org/|Globally Available|Fastly Global CDN|1"
 	                     [mirror.ps.kz]="https://mirror.ps.kz/voidlinux/|Asia|Almaty, Kazakhstan|2"
 	                     [voidlinux.mirror.garr.it]="https://voidlinux.mirror.garr.it/|Europe|Italy|2"
@@ -1911,10 +1914,10 @@ sh_chooseMirror() {
 				msg "INFO" "$last_msg" "$(log_info_msg "$last_msg")"
 			   mkdir -p "/etc/xbps.d/"
 			   cat > "/etc/xbps.d/00-repository-main.conf" <<- EOF
-				repository=$url_mirror/current
-				repository=$url_mirror/current/nonfree
-				repository=$url_mirror/current/multilib
-				repository=$url_mirror/current/multilib/nonfree
+				repository=${url_mirror}current
+				repository=${url_mirror}current/nonfree
+				repository=${url_mirror}current/multilib
+				repository=${url_mirror}current/multilib/nonfree
 				EOF
 			   evaluate_retval "$?"
 			fi
